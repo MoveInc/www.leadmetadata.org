@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Lead Metadata Specification - Version 1.0</title>
+        <meta name="author" content="FiveStreet.com (Eric Bashkoff, Rusty Klophaus)" />
+
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="normalize.css" type="text/css" />
+        <link rel="stylesheet" href="skeleton.css" type="text/css" />
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    <body>
+        <div class="container">
+            <hr />
+            <h1>Real Estate Lead Metadata Specification</h1>
+            <h4>Version 1.0</h4>
+
+            <hr />
+
+            <h2>Purpose</h2>
+            <p>
+                The Real Estate Lead Metadata Specification prescribes
+                a way to transport lead information from lead
+                generating websites (such as real-estate search
+                portals) to downstream consumers (including but not
+                limited to CRM systems) by transparently embedding it
+                within human-readable email using HTML
+                <code>meta</code> tags.
+            </p>
+            <p>
+                Version 1.0.0 of this specification focuses on
+                the transmission of "new lead" events.
+            </p>
+            <p>
+                The source code of this website is on <a href="https://github.com/fivestreet/LeadMetadata.com">Github</a>.
+                Make suggestions by opening a <a href="https://github.com/fivestreet/LeadMetadata.com">Github Issue</a>, or by forking and submitting a pull request.
+            </p>
+
+            <h2>Background</h2>
+            <p>
+                An increasing number of people search for their home
+                online. At some point, the potential homebuyer will
+                contact a real-estate agent through an online form on
+                a website. This could be a real-estate search portal
+                or the agent's website. (The potential homebuyer is
+                now considered a "lead.")
+            </p>
+            <p>
+                The website sends an email to a real estate agent with
+                the lead's information (e.g. name, email, phone,
+                property address, a brief message, etc.) The receiving
+                agent generally puts this contact information into a
+                database of leads. Historically, this has been a
+                manual process.
+            </p>
+            <p>
+                Recently, many real estate software tools have created
+                functionality to "parse" lead emails and automatically
+                extract the lead information. This is a difficult and
+                error-prone process for a variety of reasons:
+            </p>
+            <p>
+                <ul>
+                    <li>Every portal uses a different email format.</li>
+                    <li>Some portals use several different formats. (Perhaps different formats for different areas of the website.)</li>
+                    <li>Email formats change over time. (Example: seasonal marketing copy, A/B testing)</li>
+                    <li>Email clients introduce changes when an email is formatted.</li>
+                </ul>
+            </p>
+            <p>
+                When a software tool cannot properly parse
+                the lead information, everybody loses. The real estate
+                portal appears to be handing out bad leads, the real
+                estate agent loses a potential client, and the
+                potential homebuyer does not get the service he or she
+                needs.
+            </p>
+            <p>
+                The Real Estate Lead Metadata Specification describes
+                an industry standard approach for portals to
+                communicate lead information with the goal of having
+                100% accurate transmission of lead details.
+            </p>
+
+            <h2>Embedding Lead Metadata</h2>
+            <p>
+                The key concept to this specification is the idea of
+                transmitting lead information through HTML
+                <code>meta</code> tags. A quick example serves best to
+                illustrate this concept. An email that contains lead
+                information should contain header fields as follows:
+            </p>
+
+            <pre><code>
+&lt;!DOCTYPE html ... >
+&lt;html xmlns= ... >
+    &lt;head>
+        ...
+        &lt;meta name="lead_information_version" content="1.0" />
+        &lt;meta name="lead_source" content="Realtor.com" />
+        &lt;meta name="lead_type"   content="Buyer" />
+        &lt;meta name="lead_name"   content="John Smith" />
+        &lt;meta name="lead_email"  content="jsmith@gmail.com" />
+        &lt;meta name="lead_phone"  content="703-555-1212" />
+        ...
+    &lt;/head>
+    &lt;body>
+        ...
+    &lt;/body>
+&lt;/html>
+            </code></pre>
+
+            <h2>Valid Fields</h2>
+
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Notes</th>
+                        <th>Required</th>
+                        <th>Example Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>lead_information_version</code></td>
+                        <td>Version number of the specification.</td>
+                        <td>&check;</td>
+                        <td>"1.0"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_source</code></td>
+                        <td>
+                            Primary source of the lead. Can be any
+                            value, but a search portal or lead vendor
+                            should choose a consistent value. If not
+                            provided, it is up to the consuming
+                            application to choose a sensible default
+                            value.
+                        </td>
+                        <td></td>
+                        <td>"Realtor.com" "AgentWebsite.com"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_type</code></td>
+                        <td>
+                            The type of the lead. Consumer should
+                            assume a value of "Buyer" if not provided.
+                            Valid values are "Buyer", "Seller", and
+                            "Renter".
+                        </td>
+                        <td></td>
+                        <td>"Buyer" "Seller" "Renter"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_name</code></td>
+                        <td>The name of the lead.</td>
+                        <td></td>
+                        <td>"John Smith"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_email</code></td>
+                        <td>The email address of the lead.</td>
+                        <td></td>
+                        <td>"jsmith123@gmail.com"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_phone</code></td>
+                        <td>The phone number of the lead.</td>
+                        <td></td>
+                        <td>"703-555-1212"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_property_address</code></td>
+                        <td>The property address about which the lead is inquiring.</td>
+                        <td></td>
+                        <td>"123 Main Street, Alexandria, VA 22314"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_mls</code></td>
+                        <td>The MLS number of the property address.</td>
+                        <td></td>
+                        <td>"A5712345"</td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_message</code></td>
+                        <td>A message from the lead to the agent.</td>
+                        <td></td>
+                        <td>"Hello, I am interested in... I have the following question..."</td>
+                    </tr>
+                    <tr>
+                        <td colspan=4>
+                            <b><i>The specification also allows for up to 100 custom fields as follows:</i></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>lead_$FIELDNAME$</code></td>
+                        <td>
+                            A custom field, such as
+                            <code>lead_min_bedrooms</code> or
+                            <code>lead_max_price</code>. Use of a
+                            custom field requires coordination between
+                            the producer and the consumer of the field
+                            in question.
+                        </td>
+                        <td></td>
+                        <td>Any content.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <h2>Consuming Lead Metadata</h2>
+            <p>
+                Below is the recommended approach to consume lead information from emails that conform to the Real Estate Lead
+                Metadata Specification.
+            </p>
+            <p>
+                Note that in practice, some vendors erroneously put
+                <code>meta</code> tags in the <code>body</code> tag
+                rather than the <code>head</code> tag. While this is
+                not strictly valid HTML, the consuming application
+                should still account for this case and search for
+                <code>meta</code> tags anywhere within the HTML
+                document.
+            </p>
+            <p>
+                To consume:
+            </p>
+            <p>
+                <ol>
+                    <li>
+                        Parse the HTML body into a searchable document
+                        object model.
+                    </li>
+                    <li>
+                        Search the document object model for
+                        <code>meta</code> tags.
+                    </li>
+                    <li>
+                        Locate a <code>meta</code> tag named
+                        <code>lead_information_version</code>.
+                    </li>
+                    <li>
+                        Verify that the value of
+                        <code>lead_information_version</code> is equal
+                        to <code>1.0</code>.
+                    </li>
+                    <li>
+                        If successful, look for any other
+                        <code>meta</code> tags beginning with
+                        <code>lead_</code>. This is the lead
+                        information.
+                    </li>
+                </ol>
+            </p>
+
+            <p>
+                You can use the following emails for testing:
+            </p>
+            <p>
+                <a class="button button-primary" href="http://github.com/fivestreet/LeadMetadata.com">Test Email #1</a>
+                <a class="button button-primary" href="http://github.com/fivestreet/LeadMetadata.com">Test Email #2</a>
+                <a class="button button-primary" href="http://github.com/fivestreet/LeadMetadata.com">Test Email #3</a>
+            </p>
+
+            <h2>Industry Adoption</h2>
+            <h4>Move, Inc.</h4>
+            <p>
+                <a href="http://move.com">Move, Inc.</a> products are rapidly adopting the specification:
+                <ul>
+                    <li>
+                        <a href="http://www.fivestreet.com">FiveStreet</a>,
+                        <a href="http://www.topproducer.com">TopProducer</a>, and
+                        <a href="http://www.tigerlead.com">TigerLead</a> can consume emails with lead metadata.</li>
+                    <li>Most outbound <a href="http://www.realtor.com">Realtor.com</a> lead emails include lead metadata.</li>
+                    <li>All <a href="http://www.tigerlead.com">TigerLead</a> lead emails include lead metadata.</li>
+                </ul>
+            </p>
+
+            <h2>Acknowledgements</h2>
+            <p>
+                The Real Estate Lead Metadata Specification is supported by
+                <a href="http://www.fivestreet.com">FiveStreet.com</a>,
+                <a href="http://www.move.com">Move, Inc.</a>,
+                <a href="http://www.realtor.com">Realtor.com</a>, and
+                <a href="http://www.newscorp.com">News Corp.</a>.
+
+                The original specification was drafted by Eric
+                Bashkoff in June 2014, with contributions from Rusty
+                Klophaus.
+            </p>
+            <p>
+                This document is designed using the <a href="http://getskeleton.com/">Skeleton</a> CSS framework.
+            </p>
+        </div>
+    </body>
+</html>
