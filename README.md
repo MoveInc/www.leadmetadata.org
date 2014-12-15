@@ -4,6 +4,6 @@ This document is maintained by the FiveStreet.com team. Please make
 suggestions by opening a Github Issue, or by forking and submitting a
 pull request.
 
-# Deploying
+# Updates and Deploying
 
-LeadMetadata.org is hosted on Github Pages. If you push to this repository, it will update the site.
+LeadMetadata.org is hosted on Github Pages. To update, modify the gh-pages branch.
