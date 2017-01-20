@@ -1,6 +1,6 @@
 # Overview
 
-This document is maintained by the FiveStreet.com team. Please make
+This document is maintained by Move, Inc. (realtor.com). Please make
 suggestions by opening a Github Issue, or by forking and submitting a
 pull request.
 
